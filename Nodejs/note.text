@@ -1,3 +1,4 @@
 "body-parser" //giúp lấy dữ liệu từ phía client gửi lên server
 "dotenv" // lấy các tham số từ file môi trường 
 'view engine' //là ejs
+'sequelize' // kết nối với databases
