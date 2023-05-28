@@ -48,7 +48,42 @@ let getAllUser = () => {
   });
 };
 
+let getUserById = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.User.findByPk(id, { raw: true });
+      if (user) {
+        resolve(user);
+      } else resolve({});
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+let updateUserData = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // await db.User.update({})
+      let user = await db.User.findOne({ where: { id: data.id } });
+      if (user) {
+        user.firstName = data.firstName;
+        user.lastName = data.lastName;
+        user.address = data.address;
+        await user.save();
+        resolve();
+      } else {
+        resolve();
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
   createNewUser,
   getAllUser,
+  getUserById,
+  updateUserData,
 };
