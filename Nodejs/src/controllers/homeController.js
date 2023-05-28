@@ -25,8 +25,12 @@ let getCRUD = (req, res) => {
 
 let postCRUD = async (req, res) => {
   let message = await CRUDService.createNewUser(req.body);
-  console.log(message);
   return res.send("post crud");
+};
+
+let displayGetCRUD = async (req, res) => {
+  let data = await CRUDService.getAllUser();
+  return res.render("displayCRUD.ejs", { data });
 };
 
 module.exports = {
@@ -34,4 +38,5 @@ module.exports = {
   getAboutPage,
   getCRUD,
   postCRUD,
+  displayGetCRUD,
 };
