@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { push } from "connected-react-router";
 
 import * as actions from "../../store/actions";
-
+import { userService } from "../../services";
 import "./Login.scss";
 
 class Login extends Component {
@@ -13,6 +13,7 @@ class Login extends Component {
       username: "admin",
       password: "admin@123",
       isShowPassword: false,
+      errMessage: "",
     };
   }
 
@@ -22,8 +23,19 @@ class Login extends Component {
     });
   };
 
-  handleLogin = () => {
-    alert("Đăng nhập thành công");
+  handleLogin = async () => {
+    try {
+      this.setState({ errMessage: "" });
+      const res = await userService.handleLogin(
+        this.state.username,
+        this.state.password,
+      );
+      if (res.errCode === 0) {
+        this.props.userLoginSuccess(res.user);
+      } else this.setState({ errMessage: res.message });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   handleShowHidePassword = () => {
@@ -72,6 +84,9 @@ class Login extends Component {
                     </span>
                   </div>
                 </div>
+                <div className="col-12" style={{ color: "red" }}>
+                  {this.state.errMessage}
+                </div>
                 <div className="col-12">
                   <button className="btn-login" onClick={this.handleLogin}>
                     Login
@@ -106,9 +121,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     navigate: (path) => dispatch(push(path)),
-    adminLoginSuccess: (adminInfo) =>
-      dispatch(actions.adminLoginSuccess(adminInfo)),
-    adminLoginFail: () => dispatch(actions.adminLoginFail()),
+    // userLoginFail: () => dispatch(actions.adminLoginFail()),
+    userLoginSuccess: (userInfo) =>
+      dispatch(actions.userLoginSuccess(userInfo)),
   };
 };
 

@@ -3,8 +3,8 @@ import _ from 'lodash';
 import config from './config';
 
 const instance = axios.create({
-    baseURL: process.env.REACT_APP_BACKEND_URL,
-    withCredentials: true
+  baseURL: process.env.REACT_APP_BACKEND_URL,
+  withCredentials: false,
 });
 
 const createError = (httpStatusCode, statusCode, errorMessage, problems, errorCode = '') => {
